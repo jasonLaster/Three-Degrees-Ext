@@ -2,7 +2,7 @@ console.log('hello from body')
 
 
 $(document).ready(function(){
-	parse_dom()
+	parse_dom('Sarah Lacy')
 	basic_events()
 	build_popup()
 	$( "#movieTemplate" ).tmpl( movies ).appendTo( "#movieList" );
@@ -27,16 +27,20 @@ var clean_fb_search_html = function(){
 }
 
 
-var parse_dom = function(){
+var parse_dom = function(name){
 
-	// Find Sarah Lacy
-	sarah = $("*:contains('Sarah Lacy')").filter(function(){
+	// Find elements with name
+	var regexp = new RegExp(name,'g');
+	var elements = $("*:contains('" + name +"')").filter(function(){
 	  return $(this).children("*:contains('Sarah Lacy')").length == 0
 	})
 
-	html = sarah.first().html()
-	html1 = html.replace(/Sarah Lacy/g, '<a href="#" class="ThreeDegrees name">Sarah Lacy</a>')
-	sarah.first().html(html1)
+	// loop through elements and replace names with link
+	for(var i=0; i<elements.length; i++){
+		var html = $(elements[i]);
+		var new_html = html.html().replace(regexp, '<a href="#" class="ThreeDegrees name">' + name + '</a>');
+		html.html(new_html)
+	}
 }
 
 var basic_events = function(){
@@ -81,9 +85,7 @@ var build_right_panel = function(){
 	
 }
 
-var build_popup = function(){
-	console.log('hello')
-	
+var build_popup = function(){	
 	var names = $('.ThreeDegrees.name');	
 	$('#popupTemplate').tmpl().appendTo(names)
 }
