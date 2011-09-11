@@ -1,0 +1,30 @@
+.clear {clear:both;}
+
+.SixDegrees.name {position:relative; text-decoration:underline}
+
+.SixDegrees.pane {
+	position:fixed; width:350px; height:100%; right:0px; top:0px; z-index:10000000000000000;
+	background-color:#dfe2e7; 
+}
+
+.SixDegrees.pane .logo {background:url('chrome-extension://bnfcfjnphcgmhfcpddikgoeakclmgnfe/SixDegrees.png'); width:298; height:51px; margin:300px 26px;}
+
+.SixDegrees.pane .content {position:relative;height:100%}
+.SixDegrees.pane .content .profile {float:left; margin:20px 10px;}
+.SixDegrees.pane .content .picture_frame {float:left; padding:2px; background-color:#fff; border:1px solid #333;}
+.SixDegrees.pane .content .information {float:left;}
+
+.SixDegrees.pane .content .left-border {
+	position:absolute; top:0px; left:0px; width:1px; height:100%;
+	background-color:#fff; border-left:1px solid #626262;
+}
+
+
+.SixDegrees.popup {
+	position:absolute; bottom:25px; left:-25; z-index:100000000;
+	width:350px; height:200px; 
+	border:1px solid #333; background-color:white;
+}
+.SixDegrees .popup .profile {float:left; margin:20px 10px;}
+
+
