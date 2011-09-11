@@ -8,6 +8,18 @@
   </head>
   <body>
 
+    <script name="fetchPage">
+    function fetchPage(callback) {
+      var data = "John Biggs\nSarah Lacy\nMichael Arrington";
+      callback(data);
+    }
+    
+    function getTemplate(callback) {
+      callback($('#popupTemplate').tmpl())
+    }
+    
+    </script>
+
     <script id="movieTemplate" type="text/x-jquery-tmpl">
         <li>
           <b>${Name}</b> (${ReleaseYear})
@@ -34,6 +46,8 @@
 
     <h1 style="margin-top:200px;">Test Page</h1>
     <p style="width:500px;">Lorem ipsum dolor sit amet, consectetur Sarah Lacy adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Sarah Lacy quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <a href="http://techcrunch.com">John Biggs was here</a>
+    
     <div class="results">
         
     </div>

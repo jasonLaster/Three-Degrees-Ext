@@ -1,7 +1,72 @@
 <!DOCTYPE html>
+<!--
+ * Copyright (c) 2010 The Chromium Authors. All rights reserved.  Use of this
+ * source code is governed by a BSD-style license that can be found in the
+ * LICENSE file.
+-->
 <html>
   <head>
   </head>
   <body>
+    <script>
+      function fetchPage(callback) {
+        
+         var xhr = new XMLHttpRequest();
+         xhr.onreadystatechange = function(data) {
+           if (xhr.readyState == 4) {
+             if (xhr.status == 200) {
+               var data = xhr.responseText;
+               callback(data);
+             } else {
+               callback(null);
+             }
+           }
+         }
+
+         chrome.tabs.getSelected(null,function(tab) {
+         var tablink = tab.url;
+         var url = 'http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/?url=' + tablink;
+         xhr.open('GET', url, true);
+         xhr.send();
+        });
+      };
+
+
+      function getTemplate(callback) {
+        var template = $('#popupTemplate').tmpl();
+        console.log("TEMPLATE", template);
+        callback(template);
+      }
+      
+      function onRequest(request, sender, callback) {
+        if (request.action == 'fetchPage') {
+          fetchPage(callback);
+        }
+        else if (request.action == "getTemplate"){
+          getTemplate(callback)
+        }
+      };
+
+      // Wire up the listener.
+      chrome.extension.onRequest.addListener(onRequest);
+      
+    </script>
+    
+    <script id="popupTemplate" type="text/x-jquery-tmpl">
+
+      <div class="ThreeDegrees popup shadow">
+        <div class="wrapper">
+          <div class="profile">
+            <div class="picture-frame">
+              <img src="https://graph.facebook.com/jason.laster/picture"></img>
+            </div>
+          </div>
+          <div class="bottom-actions">
+          </div>
+        </div>
+      </div>
+  	
+    </script>
+    
   </body>
 </html>

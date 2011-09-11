@@ -1,8 +1,10 @@
 {
   "name": "6 Degrees",
   "version": "1.0",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  "permissions": [],
+  "description": "find people on the page",
+	"permissions": [
+	    "tabs", "http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/*"
+	  ],
   "icons": {
     "48" : "logo-48.png",
     "128" : "logo-128.png"
@@ -11,8 +13,8 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js" : ["jquery.min.js", "jquery-ui.min.js", "contentscript.js"],
-	  "css": ["styles.css"]
+      "js" : ["jquery.min.js", "jquery-ui.min.js", "jquery.tmpl.min.js", "contentscript.js"],
+  	  "css": ["styles.css"]
     }
   ]
 }
