@@ -12,20 +12,31 @@ function onText(data) {
   var names = data.split("\n")
 
 	for(var i=0; i < names.length; i++) {
-		parse_dom(names[i]);
+		try {
+			parse_dom(names[i]);	
+		} catch (err) {
+			
+		}
+		
 	}
 	
-	if (chrome.extension != undefined) {
-		chrome.extension.sendRequest({'action' : 'getTemplate'}, popupTemplate);
-	} else {
-		getTemplate(popupTemplate)
-	}
-	
+	popupTemplate();
 	basic_events()
 };
 
-function popupTemplate(html) {
-	var template = $(html);
+function popupTemplate() {
+	// var template = $(html);
+	console.log('called template')
+	console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	var template = '<div class="ThreeDegrees popup shadow">\
+    <div class="wrapper">\
+      <div class="profile">\
+      </div>\
+      <div class="bottom-actions">\
+      </div>\
+    </div>\
+  </div>'
+	template = $(template);
 	var names = $('.ThreeDegrees.name');
 
 	console.log("NAMES", names)
@@ -50,9 +61,17 @@ var parse_dom = function(name){
 
 	// loop through elements and replace names with link
 	for(var i=0; i<elements.length; i++){
+	
 		if($(elements[i]).attr('href') != undefined){
 			console.log("add classes to as", $(elements[i]).attr('href'))
-			$(elements[i]).addClass("ThreeDegrees name")
+			try {
+				
+				var el = $(elements[i])
+				el.addClass("ThreeDegrees name");
+			}
+			catch(err) {
+				console.log(err)
+			}
 			continue;
 		}
 		
@@ -60,6 +79,7 @@ var parse_dom = function(name){
 			console.log('skip script tags')
 			continue;
 		}
+		
 		
 		var html = $(elements[i]);
 		console.log("change divs & ps", html)
@@ -69,8 +89,13 @@ var parse_dom = function(name){
 }
 
 var basic_events = function(){
-		$('.ThreeDegrees.name').live('hover', function(){		
-		var element = $(this).find('.popup').toggle();
-		return false;
-	});
+		console.log('called events');
+		try {
+			$('.ThreeDegrees.name').live('hover', function(){		
+				var element = $(this).find('.popup').toggle();
+				return false;
+			});			
+		} catch(err) {
+			
+		}
 }

@@ -3,7 +3,7 @@
 
 .ThreeDegrees.popup {
 	display:none;
-	position:absolute; bottom:25px; left:-25; z-index:100000000;
+	position:absolute; bottom:25px; left:-25; z-index:1000000000000000000000000;
 	width:350px; height:200px; 
 	border:1px solid #333; background-color:white;
 }
