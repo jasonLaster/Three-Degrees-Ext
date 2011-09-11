@@ -6,7 +6,34 @@ $(document).ready(function(){
 	basic_events()
 	build_popup()
 	$( "#movieTemplate" ).tmpl( movies ).appendTo( "#movieList" );
+	// iframeshit();
 })
+
+
+var iframeshit = function(){
+	var iframe = $('<iframe id="fb" />').attr('src', 'https://www.facebook.com/search.php?q=jennifer%20lopez&type=users&init=srp')
+		
+	
+		// var iframe_src = iframe.load(function() {  
+		// 	var body = $('body', this)
+		// 	body.find('.uiHeader').remove()
+		// 	body.find('#blueBar').remove()
+		// 	body.find('#leftColContainer').remove()
+		// 	body.find('#rightCol').remove()
+		// 	body.find('.mbs.pam.clearfix.uiBoxGray.noborder').remove()
+		// 	body.find('.auxiliary.UIImageBlock_Ext').remove()
+		// 	body.find('#pageFooter').remove()
+		// 	body.find('.clearfix.uiMorePager.stat_elem.more_results_link.uiMorePagerCenter').remove()
+		// 	body.find('.fbChatSidebar').remove()
+		// 	body.find('.fbDockWrapper').remove()
+		// }).appendTo('body')
+	
+	console.log()
+	
+}
+
+
+
 
 
 var clean_fb_search_html = function(){
@@ -45,15 +72,15 @@ var parse_dom = function(name){
 
 var basic_events = function(){
 	
-	$('.ThreeDegrees.name').live('hover', function(){
-		
-		var element = $(this);
-		element.find('.popup').toggle();
-	});
-
-	$('.ThreeDegrees.name').live('click', function(){
-		// $('.ThreeDegrees.pane').show("slide", { direction: "right" }, 200);
-	})
+	// $('.ThreeDegrees.name').live('hover', function(){
+	// 	
+	// 	var element = $(this);
+	// 	element.find('.popup').toggle();
+	// });
+	// 
+	// $('.ThreeDegrees.name').live('click', function(){
+	// 	// $('.ThreeDegrees.pane').show("slide", { direction: "right" }, 200);
+	// })
 }
 
 var build_right_panel = function(){

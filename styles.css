@@ -1,8 +1,31 @@
 .clear {clear:both;}
 
-.ThreeDegrees.name {position:relative; text-decoration:underline}
 
-.ThreeDegrees.pane {
+.ThreeDegrees.popup {
+
+	position:absolute; bottom:25px; left:-25; z-index:100000000;
+	width:350px; height:200px; 
+	border:1px solid #333; background-color:white;
+}
+
+.ThreeDegrees.popup .wrapper {position:relative; height:100%}
+
+.ThreeDegrees .popup .profile {float:left; margin:20px 10px;}
+
+.ThreeDegrees.popup .bottom-actions {
+	position:absolute; bottom:0px;
+	width:100%; height:30px; background-color:#ddd;
+}
+
+.shadow {
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
+}
+
+
+
+/*.ThreeDegrees.pane {
 	position:fixed; width:350px; height:100%; right:0px; top:0px; z-index:10000000000000000;
 	background-color:#dfe2e7; 
 }
@@ -18,13 +41,5 @@
 	position:absolute; top:0px; left:0px; width:1px; height:100%;
 	background-color:#fff; border-left:1px solid #626262;
 }
-
-
-.ThreeDegrees.popup {
-	position:absolute; bottom:25px; left:-25; z-index:100000000;
-	width:350px; height:200px; 
-	border:1px solid #333; background-color:white;
-}
-.ThreeDegrees .popup .profile {float:left; margin:20px 10px;}
-
-
+*/
+.ThreeDegrees.name {position:relative; text-decoration:underline}
