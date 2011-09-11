@@ -1,11 +1,38 @@
 <html>
   <head>
+    <link rel="stylesheet" href="styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="contentscript.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
-    <h1>Test Page</h1>
+
+    <script id="movieTemplate" type="text/x-jquery-tmpl">
+        <li>
+          <b>${Name}</b> (${ReleaseYear})
+        </li>
+    </script>
+    
+    <script id="popupTemplate" type="text/x-jquery-tmpl">
+
+      <div class="ThreeDegrees popup">
+        <div class="profile">
+          <div class="picture-frame">
+            <img src="https://graph.facebook.com/jason.laster/picture"></img>
+          </div>
+        </div>
+      </div>
+  	
+    </script>
+
+    <ul id="movieList"></ul>
+
+    <h1 style="margin-top:200px;">Test Page</h1>
     <p style="width:500px;">Lorem ipsum dolor sit amet, consectetur Sarah Lacy adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Sarah Lacy quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <div class="results">
+        
+    </div>
+    
   </body>
 </html>

@@ -2,11 +2,29 @@ console.log('hello from body')
 
 
 $(document).ready(function(){
-	
+	parse_dom()
+	basic_events()
+	build_popup()
+	$( "#movieTemplate" ).tmpl( movies ).appendTo( "#movieList" );
 })
 
 
-
+var clean_fb_search_html = function(){
+	var body = $('body')
+	body.find('.uiHeader').remove()
+	body.find('#blueBar').remove()
+	body.find('#leftColContainer').remove()
+	body.find('#rightCol').remove()
+	body.find('.mbs.pam.clearfix.uiBoxGray.noborder').remove()
+	body.find('.auxiliary.UIImageBlock_Ext').remove()
+	body.find('#pageFooter').remove()
+	body.find('.clearfix.uiMorePager.stat_elem.more_results_link.uiMorePagerCenter').remove()
+	body.find('.fbChatSidebar').remove()
+	body.find('.fbDockWrapper').remove()
+	
+	
+	var search_results = $('#pagelet_search_results ul.uiList li:lt(5)');
+}
 
 
 var parse_dom = function(){
@@ -17,26 +35,26 @@ var parse_dom = function(){
 	})
 
 	html = sarah.first().html()
-	html1 = html.replace('Sarah Lacy', '<a href="#" class="SixDegrees name">Sarah Lacy</a>')
+	html1 = html.replace('Sarah Lacy', '<a href="#" class="ThreeDegrees name">Sarah Lacy</a>')
 	sarah.first().html(html1)
 }
 
 var basic_events = function(){
 	
-	$('.SixDegrees.name').live('hover', function(){
+	$('.ThreeDegrees.name').live('hover', function(){
+		
 		var element = $(this);
 		element.find('.popup').toggle();
-		$('.SixDegrees.pane').toggle()
 	});
 
-	$('.SixDegrees.name').live('click', function(){
-		// $('.SixDegrees.pane').show("slide", { direction: "right" }, 200);
+	$('.ThreeDegrees.name').live('click', function(){
+		// $('.ThreeDegrees.pane').show("slide", { direction: "right" }, 200);
 	})
 }
 
 var build_right_panel = function(){
 	// CREATE RIGHT PANE
-	var pane = $('<div class="SixDegrees pane">');
+	var pane = $('<div class="ThreeDegrees pane">');
 	var body = $('body');
 	var content = $('<div class="content">');
 	var left_border = $('<div class="left-border">');
@@ -64,20 +82,21 @@ var build_right_panel = function(){
 }
 
 var build_popup = function(){
-
-	var popup = $('<div class="SixDegrees popup">');
-	var names = $('.SixDegrees.name');
-	var picture_frame = $('<div class="picture-frame">');
-	var picture = $('<img src="https://graph.facebook.com/jason.laster/picture">');
-
-	picture.appendTo(picture_frame).appendTo(profile);
-	profile.appendTo(popup)
-	popup.appendTo(names);
-	popup.hide()
+	console.log('hello')
+	
+	var names = $('.ThreeDegrees.name');	
+	$('#popupTemplate').tmpl().appendTo(names)
 }
 
 
+var movies = [
+    { Name: "The Red Violin", ReleaseYear: "1998" },
+    { Name: "Eyes Wide Shut", ReleaseYear: "1999" },
+    { Name: "The Inheritance", ReleaseYear: "1976" }
+];
 
+// Render the template with the movies data and insert
+// the rendered HTML under the "movieList" element
 
 
 
