@@ -35,7 +35,7 @@ var parse_dom = function(){
 	})
 
 	html = sarah.first().html()
-	html1 = html.replace('Sarah Lacy', '<a href="#" class="ThreeDegrees name">Sarah Lacy</a>')
+	html1 = html.replace(/Sarah Lacy/g, '<a href="#" class="ThreeDegrees name">Sarah Lacy</a>')
 	sarah.first().html(html1)
 }
 
