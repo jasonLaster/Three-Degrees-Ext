@@ -1,13 +1,26 @@
 $(document).ready(function(){	
-	console.log("GOO", chrome.extension)
+	console.log('3Degrees')
+	// BUILD HOVER CARDS
 	if (chrome.extension != undefined) {
-		chrome.extension.sendRequest({'action' : 'fetchPage'}, onText);
+		chrome.extension.sendRequest({'action' : 'fetchNames'}, createHoverCards);
 	} else {
-		fetchPage(onText)	
+		createHoverCards("John Biggs\nSarah Lacy\nMichael Arrington")
 	}
+	
+	// TEST FB SEARCH
+	if (chrome.extension != undefined) {
+		chrome.extension.sendRequest({'action': 'fbSearch', 'name' : 'Elena Mustatea'}, parseFbSearch);
+	} else {
+		parseFbSearch('');
+	}
+	
 })
 
-function onText(data) {
+function parseFbSearch(data) {
+	console.log(data);
+}
+
+function createHoverCards(data) {
   console.log(data);
   var names = data.split("\n")
 

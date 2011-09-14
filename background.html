@@ -9,7 +9,7 @@
   </head>
   <body>
     <script>
-      function fetchPage(callback) {
+      function pingNinja(callback) {
         
          var xhr = new XMLHttpRequest();
          xhr.onreadystatechange = function(data) {
@@ -24,11 +24,28 @@
          }
 
          chrome.tabs.getSelected(null,function(tab) {
-         var tablink = tab.url;
-         var url = 'http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/?url=' + tablink;
+           var url = 'http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/?url=' + tab.url;
+           xhr.open('GET', url, true);
+           xhr.send();
+        });
+      };
+
+      function getHtml(url, callback) {
+        
+         var xhr = new XMLHttpRequest();
+         xhr.onreadystatechange = function(data) {
+           if (xhr.readyState == 4) {
+             if (xhr.status == 200) {
+               var data = xhr.responseText;
+               callback(data);
+             } else {
+               callback(null);
+             }
+           }
+         }
+
          xhr.open('GET', url, true);
          xhr.send();
-        });
       };
 
 
@@ -39,8 +56,15 @@
       }
       
       function onRequest(request, sender, callback) {
-        if (request.action == 'fetchPage') {
-          fetchPage(callback);
+        console.log(request.action);
+        
+        if (request.action == 'fetchNames') {
+          pingNinja(callback);
+        }
+        else if (request.action == "fbSearch"){
+          var name = request.name;
+          var url = 'https://www.facebook.com/search.php?q='+ name + '&type=users&init=srp'
+          getHtml(url, callback);
         }
         else if (request.action == "getTemplate"){
           getTemplate(callback)

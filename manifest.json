@@ -3,7 +3,10 @@
   "version": "1.0",
   "description": "find people on the page",
 	"permissions": [
-	    "tabs", "http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/*"
+	    "tabs", 
+			"http://ec2-50-18-37-176.us-west-1.compute.amazonaws.com/*",
+			"https://www.facebook.com/*",
+			"http://www.facebook.com/*"
 	  ],
   "icons": {
     "48" : "logo-48.png",
