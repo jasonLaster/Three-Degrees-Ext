@@ -31,6 +31,7 @@ function popupTemplate() {
 	var template = '<div class="ThreeDegrees popup shadow">\
     <div class="wrapper">\
       <div class="profile">\
+				<img src="https://graph.facebook.com/jason.laster/picture"></img> \
       </div>\
       <div class="bottom-actions">\
       </div>\
