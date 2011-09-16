@@ -79,10 +79,9 @@ function popupTemplate() {
 }
 
 
-function drawHoverCard(name, callback) {
-	
 
-	
+function drawHoverCard(name, callback) {
+
 	async.waterfall([
 			
 			// find element on page get fb search results
@@ -94,17 +93,30 @@ function drawHoverCard(name, callback) {
 
 			// go to fb and get the data for the hovercard
       function(person, fb_search_results, callback){
-          callback(null, person, fb_search_results);
+				var fb_data = {};
+				fb_data['fb_id'] = fb_search_results[0];
+				
+				$.ajax({
+				  dataType: 'jsonp',
+				  url: 'https://graph.facebook.com/' + fb_data['fb_id'],
+				  success: function (data) {
+						fb_data['fb_profile'] = data
+						callback(null, fb_data, person, fb_search_results);
+				  },
+				});
       }
 		],
 		
 	// assemble the hovercard
-  function(error, person, fb_search_results) {
-		console.log(person, fb_search_results)
-		template = $('#popupTemplate').tmpl()
-		template.appendTo(person)
+  function(error, fb_data, person, fb_search_results) {
+		console.log(fb_data, person, fb_search_results)
+		data = {}
+		data['fb_id'] = fb_data['fb_id']
+		data['fb_first_name'] = fb_data['fb_profile']['first_name']
+		data['fb_last_name'] = fb_data['fb_profile']['last_name']
+		
+		$('#popupTemplate').tmpl(data).appendTo(person)
   });
-
 
 	callback(null) // not sure why this is not working
 	
