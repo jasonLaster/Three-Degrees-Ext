@@ -1,20 +1,40 @@
 $(document).ready(function(){	
 	console.log('3Degrees')
-	// BUILD HOVER CARDS
 	if (chrome.extension != undefined) {
 		chrome.extension.sendRequest({'action' : 'fetchNames'}, createHoverCards);
 	} else {
 		createHoverCards("John Biggs\nSarah Lacy\nMichael Arrington")
 	}
-	
-	// TEST FB SEARCH
-	if (chrome.extension != undefined) {
-		chrome.extension.sendRequest({'action': 'fbSearch', 'name' : 'Elena Mustatea'}, parseFbSearch);
-	} else {
-		parseFbSearch(window.data);
+})
+
+// DRIVER
+function createHoverCards(data) {
+  console.log(data);
+  var names = data.split("\n")
+
+	for(var i=0; i < names.length; i++) {
+		try {
+			parse_dom(names[i]);	
+		} catch (err) {
+			console.log("PARSE DOM ERROR: ", err);
+		}
+		
 	}
 	
-})
+	popupTemplate();
+	basic_events()
+};
+
+
+
+// FB NAME SEARCH
+function getFbSearchResults(name) {
+	if (chrome.extension != undefined) {
+		return chrome.extension.sendRequest({'action': 'fbSearch', 'name' : name}, parseFbSearch);
+	} else {
+		return parseFbSearch(window.data);
+	}
+}
 
 function parseFbSearch(data) {
 
@@ -45,50 +65,52 @@ function parseFbSearch(data) {
 	list.push(user_names)
 	list = _.flatten(list)
 	list = _.sortBy(list, function(i){ return clean_data.search(i); })
-	
+	return list;
 }
 
-function createHoverCards(data) {
-  console.log(data);
-  var names = data.split("\n")
 
-	for(var i=0; i < names.length; i++) {
-		try {
-			parse_dom(names[i]);	
-		} catch (err) {
-			
-		}
-		
-	}
-	
-	popupTemplate();
-	basic_events()
-};
 
 function popupTemplate() {
-	// var template = $(html);
-	console.log('called template')
-	console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	var template = '<div class="ThreeDegrees popup shadow">\
-    <div class="wrapper">\
-      <div class="profile">\
-				<img src="https://graph.facebook.com/jason.laster/picture"></img> \
-      </div>\
-      <div class="bottom-actions">\
-      </div>\
-    </div>\
-  </div>'
-	template = $(template);
 	var names = $('.ThreeDegrees.name');
-
-	console.log("NAMES", names)
-	console.log("TEMPLATE", template)
-
-	for(var i=0; i < names.length; i++)	 {
-		template.clone().appendTo($(names[i]))
-	}
+	async.forEach(names, drawHoverCard, function(err){
+		console.log('DONE')
+		console.log(err)
+	});
 }
 
+
+function drawHoverCard(name, callback) {
+	
+
+	
+	async.waterfall([
+			
+			// find element on page get fb search results
+      function(callback){
+					var person = $(name);
+					var fb_search_results = getFbSearchResults(person);
+          callback(null, person, fb_search_results);
+      },
+
+			// go to fb and get the data for the hovercard
+      function(person, fb_search_results, callback){
+          callback(null, person, fb_search_results);
+      }
+		],
+		
+	// assemble the hovercard
+  function(error, person, fb_search_results) {
+		console.log(person, fb_search_results)
+		template = $('#popupTemplate').tmpl()
+		template.appendTo(person)
+  });
+
+
+	callback(null) // not sure why this is not working
+	
+}
+
+// DOM
 var parse_dom = function(name){
 
 	// Find elements with name

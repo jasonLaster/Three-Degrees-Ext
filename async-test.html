@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script src="async.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      
+      
+      
+      async.parallel([
+          function(callback){
+              callback(null, 'one');
+          },
+          function(callback){
+              callback(null, 'two');
+          },
+      ],
+      // optional callback
+      function(err, results){
+        console.log(results)
+      });
+      
+      async.waterfall([
+          function(callback){
+              callback(null, 'one');
+          },
+          function(arg1, callback){
+              callback(null, arg1 + " two");
+          },
+          function(arg1, callback){
+              callback(null, arg1 + ' done');
+          }
+      ],
+      
+      function(error, results) {
+        console.log(results)
+      }
+      );
+      
+      
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
