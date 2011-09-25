@@ -16,6 +16,7 @@ $(document).ready(function(){
 	
 })
 
+// CALLED AFTER FBSEARCHRESULTS IS CALLED
 function parseFbSearch(data) {
 
 	// CLEAN DATA
@@ -48,23 +49,24 @@ function parseFbSearch(data) {
 	
 }
 
+// GO THROUGH THE PIPELINE TO CREATE A HOVERCARD
+// 1. GET NAMES
+// 2. ADD AHREFS TO DOM
+// 3. ADD POPUP TO DOM
+// 4. ADD HOVER EVENTS
 function createHoverCards(data) {
-  console.log(data);
   var names = data.split("\n")
 
 	for(var i=0; i < names.length; i++) {
-		try {
-			parse_dom(names[i]);	
-		} catch (err) {
-			
-		}
-		
+		try {parse_dom(names[i]);}
+		catch (err) {}
 	}
 	
 	popupTemplate();
 	basic_events()
 };
 
+// HELPER FNCS FOR CREATEHOVERCARDS
 function popupTemplate() {
 	// var template = $(html);
 	console.log('called template')
