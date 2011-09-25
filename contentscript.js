@@ -144,11 +144,12 @@ function getFbSearchResults(name) {
 	if (chrome.extension != undefined) {
 		chrome.extension.sendRequest({'action': 'fbSearch', 'name' : name}, processFbSearchResults);
 	} else {
-		processFbSearchResults(window.data);
+		processFbSearchResults({'name':'jennifer lopez', 'data' : window.data});
 	}
 }
 
-function processFbSearchResults(data) {
-	console.log(data.substring(0,50));
-	// parseFbSearch
+function processFbSearchResults(response) {
+	var name = response.name
+	var data = response.data
+	console.log(response)
 }
