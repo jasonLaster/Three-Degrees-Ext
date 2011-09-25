@@ -37,7 +37,8 @@ function parseFbSearch(data) {
 	list.push(uids)
 	list.push(user_names)
 	list = _.flatten(list)
-	list = _.sortBy(list, function(i){ return clean_data.search(i); })
+	list = _.sortBy(list, function(i){ return clean_data.search(i);})
+	return list
 }
 
 // GO THROUGH THE PIPELINE TO CREATE A HOVERCARD
@@ -151,5 +152,5 @@ function getFbSearchResults(name) {
 function processFbSearchResults(response) {
 	var name = response.name
 	var data = response.data
-	console.log(response)
+	var ids = parseFbSearch(data)
 }
