@@ -1,10 +1,6 @@
 $(document).ready(function(){	
-	console.log('3Degrees')
-	if (chrome.extension != undefined) {
-		chrome.extension.sendRequest({'action' : 'fetchNames'}, createHoverCards);
-	} else {
-		createHoverCards("John Biggs\nSarah Lacy\nMichael Arrington")
-	}
+	console.log('3Degrees');
+	getFbNames();
 })
 
 // DRIVER
@@ -18,14 +14,31 @@ function createHoverCards(data) {
 		} catch (err) {
 			console.log("PARSE DOM ERROR: ", err);
 		}
-		
 	}
 	
 	popupTemplate();
-	basic_events()
+	basic_events();
 };
 
+function testfnc(){
+	console.log('hello world')
+}
 
+function getFbNames(){
+	async.waterfall([
+	    function(callback){
+				console.log(callback)		
+				if (chrome.extension != undefined) {
+					chrome.extension.sendRequest({'action' : 'fetchNames'}, callback);
+				} else {
+					callback(null, "John Biggs\nSarah Lacy\nMichael Arrington")
+				}
+	    }
+	],
+	function(err, names){
+      console.log("NAMES", names)
+  });
+}
 
 // FB NAME SEARCH
 function getFbSearchResults(name) {
@@ -70,6 +83,7 @@ function parseFbSearch(data) {
 
 
 
+// HOVERCARD DRIVER
 function popupTemplate() {
 	var names = $('.ThreeDegrees.name');
 	async.forEach(names, drawHoverCard, function(err){
@@ -79,7 +93,7 @@ function popupTemplate() {
 }
 
 
-
+// BUILD HOVERCARD
 function drawHoverCard(name, callback) {
 
 	async.waterfall([
@@ -95,15 +109,16 @@ function drawHoverCard(name, callback) {
       function(person, fb_search_results, callback){
 				var fb_data = {};
 				fb_data['fb_id'] = fb_search_results[0];
-				
-				$.ajax({
-				  dataType: 'jsonp',
-				  url: 'https://graph.facebook.com/' + fb_data['fb_id'],
-				  success: function (data) {
-						fb_data['fb_profile'] = data
-						callback(null, fb_data, person, fb_search_results);
-				  },
-				});
+				if (chrome.extension != undefined) {
+					$.ajax({
+					  dataType: 'jsonp',
+					  url: 'https://graph.facebook.com/' + fb_data['fb_id'],
+					  success: function (data) {
+							fb_data['fb_profile'] = data
+							callback(null, fb_data, person, fb_search_results);
+					  },
+					});					
+				}
       }
 		],
 		
@@ -118,9 +133,11 @@ function drawHoverCard(name, callback) {
 		$('#popupTemplate').tmpl(data).appendTo(person)
   });
 
-	callback(null) // not sure why this is not working
+	callback(null);
 	
 }
+
+
 
 // DOM
 var parse_dom = function(name){
