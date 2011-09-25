@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js" : ["jquery.min.js", "jquery-ui.min.js", "jquery.tmpl.min.js", "underscore.js", "async.min.js", "contentscript.js"],
+      "js" : ["jquery.min.js", "jquery-ui.min.js", "jquery.tmpl.min.js", "underscore.js", "async.min.js", "test.js"],
   	  "css": ["styles.css"]
     }
   ]
