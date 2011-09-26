@@ -8,7 +8,32 @@
   <head>
   </head>
   <body>
+    
+    
     <script>
+    
+      // WEB WORKER INTERFACE
+      window.cbk = [];
+      var worker = new Worker("worker.js");
+
+      worker.onmessage = function (evt) {
+
+      	var action = evt.data.action;
+      	var data = evt.data.data;
+      	
+        if (action == "processFbIds") {
+          var ids = data;
+          var cbk = window.cbk.pop();
+          cbk(ids);
+        }
+      };
+
+      worker.onerror = function (evt) {
+      	console.log('error', evt, evt.data);
+      };
+      
+    
+      // SPECIFIC FUNCTIONS
       function pingNinja(callback) {
         
          var xhr = new XMLHttpRequest();
@@ -47,14 +72,16 @@
          xhr.send();
       };
 
-
       function getTemplate(callback) {
         var template = $('#popupTemplate').tmpl();
         console.log("TEMPLATE", template);
         callback(template);
       }
       
-      function onRequest(request, sender, callback) {        
+      // REQUEST HANDLER
+      function onRequest(request, sender, callback) {
+        console.log(request.action)
+        
         if (request.action == 'fetchNames') {
           pingNinja(callback);
         }
@@ -65,6 +92,10 @@
         }
         else if (request.action == "getTemplate"){
           getTemplate(callback)
+        }
+        else if (request.action == "parseFbIds"){
+          window.cbk.push(callback);
+          worker.postMessage({'action': 'parseFbIds', 'data': request.data})
         }
       };
 

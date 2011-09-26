@@ -5,41 +5,9 @@ $(document).ready(function(){
 		chrome.extension.sendRequest({'action' : 'fetchNames'}, createHoverCards);
 	} else {
 		createHoverCards("John Biggs\nSarah Lacy\nMichael Arrington")
-	}	
+	}
+		
 })
-
-// CALLED AFTER FBSEARCHRESULTS IS CALLED
-function parseFbSearch(data) {
-
-	// CLEAN DATA
-	var clean_data = /.+big_pipe.+pagelet_search_resul.+/.exec(data)[0]
-
-	// GET URLS	
-	var urls = clean_data.match(/https:\\\/\\\/www.facebook.com\\\/\S+ /g)
-
-	// CLEAN URLS
-	urls = _(urls).map(function(url){ return url.replace(/.+com\\\//,'').replace(/\\\"/,'').trim();});
-
-	// GET UIDS	
-	var uids = 
-		_(urls).chain()
-		.select(function(url){return url.match(/profile/) != null})
-		.map(function(url){ return /\d+/.exec(url)[0]})
-		.uniq()
-		.value()
-	
-	// GET USER_NAMES
-	var user_names = _(urls).reject(function(url){return url.match(/(php|\/)/)})
-	var user_names = _.uniq(user_names)
-
-	// LIST
-	var list = []
-	list.push(uids)
-	list.push(user_names)
-	list = _.flatten(list)
-	list = _.sortBy(list, function(i){ return clean_data.search(i);})
-	return list
-}
 
 // GO THROUGH THE PIPELINE TO CREATE A HOVERCARD
 // 1. GET NAMES
@@ -47,6 +15,8 @@ function parseFbSearch(data) {
 // 3. ADD POPUP TO DOM
 // 4. ADD HOVER EVENTS
 function createHoverCards(data) {
+	if(data == undefined) return null;
+	
   var names = data.split("\n")
 
 	for(var i=0; i < names.length; i++) {
@@ -139,7 +109,9 @@ var basic_events = function(){
 		}
 }
 
-// TEST fbSearch
+
+
+// TEST fbSearch (1)
 function getFbSearchResults(name) {
 	console.log("YAY " + name)
 	if (chrome.extension != undefined) {
@@ -149,8 +121,15 @@ function getFbSearchResults(name) {
 	}
 }
 
+// TEST fbSearch (2)
 function processFbSearchResults(response) {
 	var name = response.name
 	var data = response.data
-	var ids = parseFbSearch(data)
+	console.log('call parseFbSearch with ' + name)
+	chrome.extension.sendRequest({'action':'parseFbIds', 'data': data}, fbUserIds)
+}
+
+// TEST fbSearch (3)
+function fbUserIds(ids) {
+	console.log('parse ids returned: ' + ids);
 }
