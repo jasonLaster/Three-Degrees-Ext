@@ -27,29 +27,20 @@ function createHoverCards(data) {
 		catch (err) {}
 	}
 	
-	popupTemplate();
 	basic_events()
 };
 
 // HELPER FNCS FOR CREATEHOVERCARDS
-function popupTemplate() {
-	// var template = $(html);
-	// console.log('called template')
-	// console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	var template = '<div class="ThreeDegrees popup shadow">\
-    <div class="wrapper">\
-      <div class="profile">\
-				<img src="https://graph.facebook.com/jason.laster/picture"></img> \
-      </div>\
-      <div class="bottom-actions">\
-      </div>\
-    </div>\
-  </div>'
-	template = $(template);
-	var names = $('.ThreeDegrees.name');
+function popupTemplate(response) {
+	var template = response.template;
+	var name = response.name;
+	var ids = response.ids;
 
-	// console.log("NAMES", names)
-	// console.log("TEMPLATE", template)
+	var template = $(template);
+	var names = $("a.ThreeDegrees.name:contains('" + name +"')")
+
+	console.log("NAMES", names)
+	console.log("TEMPLATE", template)
 
 	for(var i=0; i < names.length; i++)	 {
 		template.clone().appendTo($(names[i]))
@@ -109,7 +100,7 @@ var basic_events = function(){
 		}
 }
 
-
+// FBSEARCH
 
 // TEST fbSearch (1)
 function getFbSearchResults(name) {
@@ -134,4 +125,7 @@ function fbUserIds(response) {
 	var ids = response.data;
 	var name = response.name;
 	console.log(name + ' ids: ' + ids);
+	
+	chrome.extension.sendRequest({'action' : 'getTemplate', 'name' : name, 'ids': ids}, popupTemplate);
+	
 }

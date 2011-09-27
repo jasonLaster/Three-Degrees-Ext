@@ -6,6 +6,8 @@
 -->
 <html>
   <head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
   </head>
   <body>
     
@@ -72,10 +74,12 @@
          xhr.send();
       };
 
-      function getTemplate(callback) {
-        var template = $('#popupTemplate').tmpl();
-        console.log("TEMPLATE", template);
-        callback(template);
+      function getTemplate(callback, name, ids) {
+        console.log(callback, name, ids);
+        if(name == undefined || ids == undefined || name == null || ids == []) return null;
+        var template = $('#popupTemplate').tmpl({'FbId':ids[0], 'Name':name}).html();
+        var resp = {'template':template, 'name':name, 'ids':ids};
+        callback(resp);
       }
       
       // REQUEST HANDLER
@@ -91,7 +95,9 @@
           pingFbSearch(url, callback, name);
         }
         else if (request.action == "getTemplate"){
-          getTemplate(callback)
+          var name = request.name;
+          var ids = request.ids;
+          getTemplate(callback, name, ids)
         }
         else if (request.action == "parseFbIds"){
           window.cbk.push(callback);
@@ -105,19 +111,20 @@
     </script>
     
     <script id="popupTemplate" type="text/x-jquery-tmpl">
-
-      <div class="ThreeDegrees popup shadow">
-        <div class="wrapper">
-          <div class="profile">
-            <div class="picture-frame">
-              <img src="https://graph.facebook.com/jason.laster/picture"></img>
+      <div>
+        <div class="ThreeDegrees popup shadow">
+          <div class="wrapper">
+            <div class="profile">
+              <div class="picture-frame">
+                <img src="https://graph.facebook.com/${FbId}/picture"></img>
+              </div>
+              <div>${Name}</div>
+            </div>
+            <div class="bottom-actions">
             </div>
           </div>
-          <div class="bottom-actions">
-          </div>
         </div>
-      </div>
-  	
+  	  </div>
     </script>
     
   </body>
