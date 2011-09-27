@@ -20,11 +20,11 @@
 
       	var action = evt.data.action;
       	var data = evt.data.data;
+      	var name = evt.data.name;
       	
         if (action == "processFbIds") {
-          var ids = data;
           var cbk = window.cbk.pop();
-          cbk(ids);
+          cbk({'data':data, 'name':name});
         }
       };
 
@@ -95,7 +95,7 @@
         }
         else if (request.action == "parseFbIds"){
           window.cbk.push(callback);
-          worker.postMessage({'action': 'parseFbIds', 'data': request.data})
+          worker.postMessage({'action': 'parseFbIds', 'data': request.data, 'name' : request.name})
         }
       };
 

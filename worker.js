@@ -1,8 +1,9 @@
 importScripts('underscore.js');
 onmessage = function (evt) {
 	var data = evt.data.data;
+	var name = evt.data.name;
 	var ids = parseFbSearch(data)
-	self.postMessage({'action': 'processFbIds', 'data': ids}); 
+	self.postMessage({'action': 'processFbIds', 'data': ids, 'name':name}); 
 };
 
 function parseFbSearch(data) {

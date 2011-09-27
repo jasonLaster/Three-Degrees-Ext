@@ -126,10 +126,12 @@ function processFbSearchResults(response) {
 	var name = response.name
 	var data = response.data
 	console.log('call parseFbSearch with ' + name)
-	chrome.extension.sendRequest({'action':'parseFbIds', 'data': data}, fbUserIds)
+	chrome.extension.sendRequest({'action':'parseFbIds', 'data': data, 'name': name}, fbUserIds)
 }
 
 // TEST fbSearch (3)
-function fbUserIds(ids) {
-	console.log('parse ids returned: ' + ids);
+function fbUserIds(response) {
+	var ids = response.data;
+	var name = response.name;
+	console.log(name + ' ids: ' + ids);
 }
