@@ -6,9 +6,36 @@
 -->
 <html>
   <head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
   </head>
   <body>
+    
+    
     <script>
+    
+      // WEB WORKER INTERFACE
+      window.cbk = [];
+      var worker = new Worker("worker.js");
+
+      worker.onmessage = function (evt) {
+
+      	var action = evt.data.action;
+      	var data = evt.data.data;
+      	var name = evt.data.name;
+      	
+        if (action == "processFbIds") {
+          var cbk = window.cbk.pop();
+          cbk({'data':data, 'name':name});
+        }
+      };
+
+      worker.onerror = function (evt) {
+      	console.log('error', evt, evt.data);
+      };
+      
+    
+      // SPECIFIC FUNCTIONS
       function pingNinja(callback) {
         
          var xhr = new XMLHttpRequest();
@@ -30,14 +57,13 @@
         });
       };
 
-      function getHtml(url, callback) {
-        
+      function pingFbSearch(url, callback, name) {
          var xhr = new XMLHttpRequest();
          xhr.onreadystatechange = function(data) {
            if (xhr.readyState == 4) {
              if (xhr.status == 200) {
                var data = xhr.responseText;
-               callback(data);
+               callback({'data' : data, 'name' : name});
              } else {
                callback(null);
              }
@@ -48,15 +74,17 @@
          xhr.send();
       };
 
-
-      function getTemplate(callback) {
-        var template = $('#popupTemplate').tmpl();
-        console.log("TEMPLATE", template);
-        callback(template);
+      function getTemplate(callback, name, ids) {
+        console.log(callback, name, ids);
+        if(name == undefined || ids == undefined || name == null || ids == []) return null;
+        var template = $('#popupTemplate').tmpl({'FbId':ids[0], 'Name':name}).html();
+        var resp = {'template':template, 'name':name, 'ids':ids};
+        callback(resp);
       }
       
+      // REQUEST HANDLER
       function onRequest(request, sender, callback) {
-        console.log(request.action);
+        console.log(request.action)
         
         if (request.action == 'fetchNames') {
           pingNinja(callback);
@@ -64,10 +92,16 @@
         else if (request.action == "fbSearch"){
           var name = request.name;
           var url = 'https://www.facebook.com/search.php?q='+ name + '&type=users&init=srp'
-          getHtml(url, callback);
+          pingFbSearch(url, callback, name);
         }
         else if (request.action == "getTemplate"){
-          getTemplate(callback)
+          var name = request.name;
+          var ids = request.ids;
+          getTemplate(callback, name, ids)
+        }
+        else if (request.action == "parseFbIds"){
+          window.cbk.push(callback);
+          worker.postMessage({'action': 'parseFbIds', 'data': request.data, 'name' : request.name})
         }
       };
 
@@ -77,19 +111,20 @@
     </script>
     
     <script id="popupTemplate" type="text/x-jquery-tmpl">
-
-      <div class="ThreeDegrees popup shadow">
-        <div class="wrapper">
-          <div class="profile">
-            <div class="picture-frame">
-              <img src="https://graph.facebook.com/jason.laster/picture"></img>
+      <div>
+        <div class="ThreeDegrees popup shadow">
+          <div class="wrapper">
+            <div class="profile">
+              <div class="picture-frame">
+                <img src="https://graph.facebook.com/${FbId}/picture"></img>
+              </div>
+              <div>${Name}</div>
+            </div>
+            <div class="bottom-actions">
             </div>
           </div>
-          <div class="bottom-actions">
-          </div>
         </div>
-      </div>
-  	
+  	  </div>
     </script>
     
   </body>
